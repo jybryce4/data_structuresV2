@@ -1,0 +1,6 @@
+*.exe
+.vs
+.idea
+cmake-build-debug
+out
+Thumbs.db
