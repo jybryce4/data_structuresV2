@@ -54,6 +54,7 @@ namespace data_structures {
         virtual ~list();
 
         bool empty() const;
+        int get_length() const;
 
         void add_node(const T &data);
 
@@ -140,6 +141,11 @@ namespace data_structures {
     template<class T>
     bool list<T>::empty() const {
         return length == 0;
+    }
+
+    template<class T>
+    int list<T>::get_length() const {
+        return length;
     }
 
     template<class T>
