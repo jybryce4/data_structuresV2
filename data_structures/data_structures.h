@@ -57,25 +57,14 @@ namespace data_structures {
 	// -------------------------------------------------
 	// node
 	template<class T>
-	node<T>::node(const T& data) {
-		m_data = data;
-		m_next = nullptr;
-		m_prev = nullptr;
-	}
+	node<T>::node(const T& data) : m_data(data), m_next(nullptr), m_prev(nullptr) {}
 
 	template<class T>
-	node<T>::node(const T& data, node_ptr next) {
-		m_data = data;
-		m_next = next;
-		m_prev = nullptr;
-	}
+	node<T>::node(const T& data, node_ptr next) : m_data(data), m_next(next), m_prev(nullptr) {}
 
 	template<class T>
-	node<T>::node(const T& data, node_ptr next, node_ptr prev) {
-		m_data = data;
-		m_next = next;
-		m_prev = prev;
-	}
+	node<T>::node(const T& data, node_ptr next, node_ptr prev)
+	            : m_data(data), m_next(next), m_prev(prev){}
 
 	template<class T>
 	node<T>::~node() {
