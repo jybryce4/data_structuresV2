@@ -216,6 +216,7 @@ namespace data_structures {
     template<class T>
     void list<T>::clear() {
         m_head.reset();
+        m_length = 0;
     }
 
     template<class T>

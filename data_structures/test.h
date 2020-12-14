@@ -30,6 +30,14 @@ void list_tester() {
 
     cout << "Copied my_other_list into my_list..." << endl;
     my_list.fwd_traverse();
+
+    cout << "Creating empty list..." << endl;
+    data_structures::list<int> empty_list;
+    try {
+        empty_list.get_entry(1);
+    } catch (const std::domain_error &error) {
+        cout << error.what() << endl;
+    }
 }
 
 #endif
