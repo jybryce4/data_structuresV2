@@ -39,7 +39,7 @@ namespace data_structures {
     class list {
         typedef std::shared_ptr<node<T>> node_ptr;
     private:
-        int length;
+        int m_length;
         node_ptr m_head;
 
         auto copy_list(const node_ptr &original_list_ptr);
@@ -54,7 +54,8 @@ namespace data_structures {
         virtual ~list();
 
         bool empty() const;
-        int get_length() const;
+
+        int length() const;
 
         void add_node(const T &data);
 
@@ -62,7 +63,9 @@ namespace data_structures {
 
         void delete_node(node_ptr del_node);
 
-        auto search(node_ptr s_node) const;
+        auto get_node_at(int position) const;
+
+        T get_entry(int position) const;
 
         void fwd_traverse() const;
 
@@ -122,15 +125,15 @@ namespace data_structures {
 
     // list
     template<class T>
-    list<T>::list() : m_head(nullptr) {}
+    list<T>::list() : m_head(nullptr), m_length(0) {}
 
     template<class T>
-    list<T>::list(node_ptr head) : m_head(head) {}
+    list<T>::list(node_ptr head) : m_head(head), m_length(0) {}
 
     template<class T>
     list<T>::list(const list<T> &cp_list) {
         m_head = copy_list(cp_list);
-        length = cp_list.length;
+        m_length = cp_list.length();
     }
 
     template<class T>
@@ -140,12 +143,12 @@ namespace data_structures {
 
     template<class T>
     bool list<T>::empty() const {
-        return length == 0;
+        return m_length == 0;
     }
 
     template<class T>
-    int list<T>::get_length() const {
-        return length;
+    int list<T>::length() const {
+        return m_length;
     }
 
     template<class T>
@@ -154,14 +157,14 @@ namespace data_structures {
         if (new_node->get_next() == nullptr) {
             new_node->set_next(m_head);
             m_head = new_node;
-            length++;
+            m_length++;
         } else {
             auto tmp = m_head;
             while (tmp->get_next() != nullptr) {
                 tmp = tmp->get_next();
             }
             tmp->set_next(new_node);
-            length++;
+            m_length++;
         }
 
     }
@@ -177,8 +180,22 @@ namespace data_structures {
     }
 
     template<class T>
-    auto list<T>::search(node_ptr s_node) const {
+    auto list<T>::get_node_at(int position) const {
+        auto current = m_head;
+        for (int count = 1; count < position; ++count) {
+            current = current->get_next();
+        }
+        return current;
+    }
 
+    template<class T>
+    T list<T>::get_entry(int position) const {
+        if ((position >= 1) && (position <= m_length)) {
+            auto nd_ptr = get_node_at(position);
+            return nd_ptr->get_data();
+        } else {
+            throw std::domain_error("Error: get_entry called with invalid position or empty list.");
+        }
     }
 
     template<class T>
