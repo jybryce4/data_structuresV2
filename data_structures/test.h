@@ -24,13 +24,13 @@ namespace test {
         cout << "my_list.fwd_traverse(): ";
         my_list.fwd_traverse();
 
-        cout << "my_other_list.fwd_traverse(): ";
-        my_other_list.fwd_traverse();
+//        cout << "my_other_list.fwd_traverse(): ";
+//        my_other_list.fwd_traverse();
 
-        my_list = my_other_list;
-
-        cout << "Copied my_other_list into my_list..." << endl;
-        my_list.fwd_traverse();
+//        my_list = my_other_list;
+//
+//        cout << "Copied my_other_list into my_list..." << endl;
+//        my_list.fwd_traverse();
 
         cout << "Creating empty list..." << endl;
         data_structures::list<int> empty_list;
@@ -39,6 +39,8 @@ namespace test {
         } catch (const std::domain_error &error) {
             cout << error.what() << endl;
         }
+        cout << "Backward traverse: ";
+        my_list.bkd_traverse();
     }
 }
 

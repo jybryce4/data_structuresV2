@@ -41,6 +41,7 @@ namespace data_structures {
     private:
         int m_length;
         node_ptr m_head;
+        node_ptr m_tail;
 
         auto copy_list(const node_ptr &original_list_ptr);
 
@@ -125,14 +126,15 @@ namespace data_structures {
 
     // list
     template<class T>
-    list<T>::list() : m_head(nullptr), m_length(0) {}
+    list<T>::list() : m_head(nullptr), m_tail(nullptr), m_length(0) {}
 
     template<class T>
-    list<T>::list(node_ptr head) : m_head(head), m_length(0) {}
+    list<T>::list(node_ptr head) : m_head(head), m_tail(nullptr), m_length(0) {}
 
     template<class T>
     list<T>::list(const list<T> &cp_list) {
         m_head = copy_list(cp_list);
+        m_tail = cp_list.m_tail;
         m_length = cp_list.length();
     }
 
@@ -153,15 +155,30 @@ namespace data_structures {
 
     template<class T>
     void list<T>::push(const T &data) {
-        auto new_node = std::make_shared<node<T>>(data);
-        new_node->set_next(m_head);
-        new_node->set_prev(nullptr);
+        if (m_head == nullptr) {
+            m_head = std::make_shared<node<T>>(data);
+            m_tail = nullptr;
+        } else {
+            if (m_tail == nullptr) {
+                m_tail = std::make_shared<node<T>>(data);
+                m_head->set_next(m_tail);
+                m_tail->set_prev(m_head);
+            } else {
+//                auto new_node = std::make_shared<node<T>>(data);
+//                auto prev_head = m_head;
+//                auto new_head = new_node;
+//                new_head->set_prev(prev_head);
+//                prev_head->set_next(new_head);
+//                m_head = new_head;
 
-        if (m_head != nullptr) {
-            m_head->set_prev(new_node);
+                auto prev_tail = m_tail;
+                auto new_tail = std::make_shared<node<T>>(data);
+                new_tail->set_prev(prev_tail);
+                prev_tail->set_next(new_tail);
+                m_tail = new_tail;
+            }
         }
-
-        m_head = new_node;
+        m_length++;
     }
 
     template<class T>
@@ -195,22 +212,24 @@ namespace data_structures {
 
     template<class T>
     void list<T>::fwd_traverse() const {
-        auto current_ptr = m_head;
-        while (current_ptr != nullptr) {
-            std::cout << current_ptr->get_data() << "-->";
-            current_ptr = current_ptr->get_next();
+        for (auto current_ptr = m_head; current_ptr != nullptr; current_ptr = current_ptr->get_next()) {
+            std::cout << current_ptr->get_data() << "->";
         }
         std::cout << std::endl;
     }
 
     template<class T>
     void list<T>::bkd_traverse() const {
-
+        for (auto current_ptr = m_tail; current_ptr != nullptr; current_ptr = current_ptr->get_prev()) {
+            std::cout << current_ptr->get_data() << "->";
+        }
+        std::cout << std::endl;
     }
 
     template<class T>
     void list<T>::clear() {
         m_head.reset();
+        m_tail.reset();
         m_length = 0;
     }
 
