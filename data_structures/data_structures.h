@@ -154,19 +154,14 @@ namespace data_structures {
     template<class T>
     void list<T>::push(const T &data) {
         auto new_node = std::make_shared<node<T>>(data);
-        if (new_node->get_next() == nullptr) {
-            new_node->set_next(m_head);
-            m_head = new_node;
-            m_length++;
-        } else {
-            auto tmp = m_head;
-            while (tmp->get_next() != nullptr) {
-                tmp = tmp->get_next();
-            }
-            tmp->set_next(new_node);
-            m_length++;
+        new_node->set_next(m_head);
+        new_node->set_prev(nullptr);
+
+        if (m_head != nullptr) {
+            m_head->set_prev(new_node);
         }
 
+        m_head = new_node;
     }
 
     template<class T>
