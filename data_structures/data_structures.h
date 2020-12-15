@@ -57,7 +57,7 @@ namespace data_structures {
 
         int length() const;
 
-        void add_node(const T &data);
+        void push(const T &data);
 
         void insert(const T &data);
 
@@ -152,7 +152,7 @@ namespace data_structures {
     }
 
     template<class T>
-    void list<T>::add_node(const T &data) {
+    void list<T>::push(const T &data) {
         auto new_node = std::make_shared<node<T>>(data);
         if (new_node->get_next() == nullptr) {
             new_node->set_next(m_head);

@@ -14,11 +14,11 @@ namespace test {
         data_structures::list<int> my_other_list;
 
         for (int i = 0; i < 10; i++) {
-            my_list.add_node(i);
+            my_list.push(i);
         }
 
         for (int j = 10; j < 20; j++) {
-            my_other_list.add_node(j);
+            my_other_list.push(j);
         }
 
         cout << "my_list.fwd_traverse(): ";
