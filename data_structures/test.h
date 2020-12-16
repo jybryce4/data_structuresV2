@@ -41,6 +41,22 @@ namespace test {
         }
         cout << "Backward traverse: ";
         my_list.bkd_traverse();
+
+        cout << "Inserting 32 at position 3..." << endl;
+        my_list.insert(32, 3);
+        my_list.fwd_traverse();
+        my_list.bkd_traverse();
+        cout << "Inserting 41 at position 5..." << endl;
+        my_list.insert(41, 5);
+        my_list.fwd_traverse();
+        my_list.bkd_traverse();
+        cout << "Attempting to insert into empty list..." << endl;
+        try {
+            empty_list.insert(60, 4);
+        } catch (const std::domain_error &error) {
+            cout << error.what() << endl;
+        }
+
     }
 }
 

@@ -60,7 +60,7 @@ namespace data_structures {
 
         void push(const T &data);
 
-        void insert(const T &data);
+        void insert(const T &data, int position);
 
         void delete_node(node_ptr del_node);
 
@@ -164,13 +164,6 @@ namespace data_structures {
                 m_head->set_next(m_tail);
                 m_tail->set_prev(m_head);
             } else {
-//                auto new_node = std::make_shared<node<T>>(data);
-//                auto prev_head = m_head;
-//                auto new_head = new_node;
-//                new_head->set_prev(prev_head);
-//                prev_head->set_next(new_head);
-//                m_head = new_head;
-
                 auto prev_tail = m_tail;
                 auto new_tail = std::make_shared<node<T>>(data);
                 new_tail->set_prev(prev_tail);
@@ -182,8 +175,19 @@ namespace data_structures {
     }
 
     template<class T>
-    void list<T>::insert(const T &data) {
+    void list<T>::insert(const T &data, int position) {
+        if (empty() || position < 1 || position > m_length) {
+            throw std::domain_error("Error: list is empty or the position is invalid.");
+        }
+        auto node_before = get_node_at(position);
+        auto new_node = std::make_shared<node<T>>(data);
+        auto node_after = node_before->get_next();
 
+        node_before->set_next(new_node);
+        new_node->set_next(node_after);
+
+        node_after->set_prev(new_node);
+        new_node->set_prev(node_before);
     }
 
     template<class T>
