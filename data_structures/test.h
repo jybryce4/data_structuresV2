@@ -1,64 +1,44 @@
 #ifndef TEST_H
 #define TEST_H
 
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
+#include <vector>
 
 #include "data_structures.h"
 
-using std::cout;
-using std::endl;
-
 namespace test {
+    template<class T>
+    auto list_creator(const std::vector<T> &data_items) {
+        data_structures::list<T> r_list;
+        for (int i = 0; i < data_items.size(); i++) {
+            r_list.push(data_items[i]);
+        }
+        return r_list;
+    }
+
+    auto test_array_creator() {
+        srand(time(nullptr));
+        int num_tests = rand() % 10 + 1;
+
+        std::vector<int> test_array;
+        for (int i = 0; i < num_tests; i++) {
+            int rand_num = rand() % 1000 + 1;
+            test_array.push_back(rand_num);
+        }
+
+        return test_array;
+    }
+
     void list_tester() {
-        data_structures::list<int> my_list;
-        data_structures::list<int> my_other_list;
+        data_structures::list<int> my_list = list_creator(test_array_creator());
 
-        for (int i = 0; i < 10; i++) {
-            my_list.push(i);
-        }
-
-        for (int j = 10; j < 20; j++) {
-            my_other_list.push(j);
-        }
-
-        cout << "my_list.fwd_traverse(): ";
+        std::cout << "my_list.fwd_traverse(): ";
         my_list.fwd_traverse();
-
-//        cout << "my_other_list.fwd_traverse(): ";
-//        my_other_list.fwd_traverse();
-
-//        my_list = my_other_list;
-//
-//        cout << "Copied my_other_list into my_list..." << endl;
-//        my_list.fwd_traverse();
-
-        cout << "Creating empty list..." << endl;
-        data_structures::list<int> empty_list;
-        try {
-            empty_list.get_entry(1);
-        } catch (const std::domain_error &error) {
-            cout << error.what() << endl;
-        }
-        cout << "Backward traverse: ";
+        std::cout << "my_list.bkd_traverse(): ";
         my_list.bkd_traverse();
-
-        cout << "Inserting 32 at position 3..." << endl;
-        my_list.insert(32, 3);
-        my_list.fwd_traverse();
-        my_list.bkd_traverse();
-        cout << "Inserting 41 at position 5..." << endl;
-        my_list.insert(41, 5);
-        my_list.fwd_traverse();
-        my_list.bkd_traverse();
-        cout << "Attempting to insert into empty list..." << endl;
-        try {
-            empty_list.insert(60, 4);
-        } catch (const std::domain_error &error) {
-            cout << error.what() << endl;
-        }
-
     }
 }
-
 
 #endif
