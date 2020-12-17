@@ -33,6 +33,8 @@ namespace data_structures {
         void set_next(node_ptr next);
 
         void set_prev(node_ptr prev);
+
+        void clear();
     }; // end node
 
     template<class T>
@@ -43,7 +45,7 @@ namespace data_structures {
         node_ptr m_head;
         node_ptr m_tail;
 
-        auto copy_list(const node_ptr &original_list_ptr);
+        node_ptr copy_list(const node_ptr &original_list_ptr);
 
     public:
         list();
@@ -62,7 +64,7 @@ namespace data_structures {
 
         void insert(const T &data, int position);
 
-        void delete_node(node_ptr del_node);
+        void delete_node(int position);
 
         auto get_node_at(int position) const;
 
@@ -89,8 +91,7 @@ namespace data_structures {
 
     template<class T>
     node<T>::~node() {
-        m_next.reset();
-        m_prev.reset();
+        clear();
     }
 
     template<class T>
@@ -122,6 +123,12 @@ namespace data_structures {
     void node<T>::set_prev(node_ptr prev) {
         m_prev = prev;
     }
+
+    template<class T>
+    void node<T>::clear() {
+        m_next.reset();
+        m_prev.reset();
+    }
     // end node member function definitions
 
     // list
@@ -133,7 +140,7 @@ namespace data_structures {
 
     template<class T>
     list<T>::list(const list<T> &cp_list) {
-        m_head = copy_list(cp_list);
+        m_head = copy_list(cp_list.m_head);
         m_tail = cp_list.m_tail;
         m_length = cp_list.length();
     }
@@ -179,6 +186,7 @@ namespace data_structures {
         if (empty() || position < 1 || position > m_length) {
             throw std::domain_error("Error: list is empty or the position is invalid.");
         }
+
         auto node_before = get_node_at(position);
         auto new_node = std::make_shared<node<T>>(data);
         auto node_after = node_before->get_next();
@@ -191,8 +199,17 @@ namespace data_structures {
     }
 
     template<class T>
-    void list<T>::delete_node(node_ptr del_node) {
+    void list<T>::delete_node(int position) {
+        if (empty() || position < 1 || position > m_length) {
+            throw std::domain_error("Error: list is empty or the position is invalid.");
+        }
 
+        auto node_to_delete = get_node_at(position);
+        auto node_before = node_to_delete->get_prev();
+        auto node_after = node_to_delete->get_next();
+
+        node_before->set_next(node_after);
+        node_after->set_prev(node_before);
     }
 
     template<class T>
@@ -238,13 +255,14 @@ namespace data_structures {
     }
 
     template<class T>
-    auto list<T>::copy_list(const node_ptr &original_list_ptr) {
-	    node_ptr copied_list_ptr;
-	    if (original_list_ptr != nullptr) {
-	        copied_list_ptr = std::make_shared<node<T>>(copied_list_ptr->get_data());
-	        copied_list_ptr->set_next(copy_list(original_list_ptr->get_next()));
-	    }
-	    return copied_list_ptr;
+    typename list<T>::node_ptr list<T>::copy_list(const node_ptr &original_list_ptr) {
+        node_ptr copied_list_ptr;
+        if (original_list_ptr != nullptr) {
+            copied_list_ptr = std::make_shared<node<T>>(copied_list_ptr->get_data());
+            copied_list_ptr->set_next(copy_list(original_list_ptr->get_next()));
+            copied_list_ptr->set_prev(copy_list(original_list_ptr->get_prev()));
+        }
+        return copied_list_ptr;
     }
 }
 
