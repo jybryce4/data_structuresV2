@@ -8,7 +8,16 @@
 
 #include "data_structures.h"
 
-namespace test {
+namespace list_tests {
+    template<class T>
+    auto list_creator(const std::vector<T>& data_items);
+
+    auto test_array_creator();
+
+    void list_tester();
+
+    // ------------------------------------------------------
+    
     template<class T>
     auto list_creator(const std::vector<T> &data_items) {
         data_structures::list<T> r_list;
@@ -38,7 +47,13 @@ namespace test {
         my_list.fwd_traverse();
         std::cout << "my_list.bkd_traverse(): ";
         my_list.bkd_traverse();
-    }
-}
 
-#endif
+        std::vector<std::string> names = {"Jamey", "Xhalite", "Keita", "Kino", "Andrea"};
+        data_structures::list<std::string> str_list = list_creator(names);
+
+        str_list.fwd_traverse();
+        str_list.bkd_traverse();
+    } // end list_tester
+} // end test
+
+#endif // TEST_H

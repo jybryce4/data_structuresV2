@@ -18,7 +18,7 @@ namespace user_types {
         std::string get_title() const;
         std::string get_author() const;
 
-        std::ostream &operator<<(const Book &book);
+        std::ostream& operator<<(const Book &book);
     };
 } // namespace user_types
 

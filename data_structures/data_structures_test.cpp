@@ -1,7 +1,7 @@
 #include "test.h"
 
 int main() {
-    test::list_tester();
+    list_tests::list_tester();
 
 	return 0;
 }

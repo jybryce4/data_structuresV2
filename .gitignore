@@ -1,6 +1,9 @@
 *.exe
 .vs
 .idea
+.vscode
 cmake-build-debug
 out
 Thumbs.db
+build
+
