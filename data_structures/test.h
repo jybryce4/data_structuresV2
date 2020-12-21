@@ -4,9 +4,11 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "data_structures.h"
+#include "user_types.h"
 
 namespace list_tests {
     template<class T>
@@ -51,8 +53,25 @@ namespace list_tests {
         std::vector<std::string> names = {"Jamey", "Xhalite", "Keita", "Kino", "Andrea"};
         data_structures::list<std::string> str_list = list_creator(names);
 
+        std::cout << "str_list.fwd_traverse(): ";
         str_list.fwd_traverse();
+        std::cout << "str_list.bkd_traverse(): ";
         str_list.bkd_traverse();
+
+        user_types::Book lotr("Fellowship of the Ring", "JRR Tolkien", 9780007117116);
+        user_types::Book mistborn("The Final Empire", "Brandon Sanderson", 9780765360960);
+        user_types::Book wot("The Eye of the World", "Robert Jordan", 9780812511819);
+
+        std::vector<user_types::Book> books = { lotr, mistborn, wot };
+
+        data_structures::list<user_types::Book> book_list = list_creator(books);
+
+        std::cout << std::endl;
+        std::cout << "Books (forward): \n";
+        book_list.fwd_traverse();
+        std::cout << "Books (backward): \n";
+        book_list.bkd_traverse();
+
     } // end list_tester
 } // end test
 

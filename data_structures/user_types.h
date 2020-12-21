@@ -10,16 +10,15 @@ namespace user_types {
         long long m_isbn;
         std::string m_title;
         std::string m_author;
-
     public:
         Book(std::string title, std::string author, long long isbn);
 
         long long get_isbn() const;
         std::string get_title() const;
         std::string get_author() const;
-
-        std::ostream& operator<<(const Book &book);
     };
+
+    std::ostream& operator<<(std::ostream& os, const Book& book);
 } // namespace user_types
 
-#endif
+#endif // DATA_STRUCTURES_USER_TYPES_H

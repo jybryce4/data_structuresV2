@@ -4,6 +4,6 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
-add_executable (data_structures "data_structures.h" "data_structures_test.cpp" "test.h")
+add_executable (data_structures "data_structures.h" "data_structures_test.cpp" "test.h" "user_types.cpp")
 
 # TODO: Add tests and install targets if needed.
