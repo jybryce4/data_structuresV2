@@ -31,9 +31,9 @@ namespace data_structures {
 
             void set_data(const T& data);
 
-            void set_next(node_ptr next);
+            void set_next(const node_ptr& next);
 
-            void set_prev(node_ptr prev);
+            void set_prev(const node_ptr& prev);
 
             void clear();
         }; // end node
@@ -62,7 +62,7 @@ namespace data_structures {
 
             void push(const T& data);
 
-            void insert(const T& data, int position);
+            void insert_after(int position, const T& data);
 
             void delete_node(int position);
 
@@ -137,12 +137,12 @@ namespace data_structures {
         }
 
         template<class T>
-        void node<T>::set_next(node_ptr next) {
+        void node<T>::set_next(const node_ptr& next) {
             m_next = next;
         }
 
         template<class T>
-        void node<T>::set_prev(node_ptr prev) {
+        void node<T>::set_prev(const node_ptr& prev) {
             m_prev = prev;
         }
 
@@ -160,7 +160,7 @@ namespace data_structures {
         list<T>::list() : m_head(nullptr), m_tail(nullptr), m_length(0) {}
 
         template<class T>
-        list<T>::list(node_ptr head) : m_head(head), m_tail(nullptr), m_length(1) {}
+        list<T>::list(node_ptr head) : m_head(head), m_tail(nullptr), m_length(0) {}
 
         template<class T>
         list<T>::list(const list<T>& cp_list) : m_length(cp_list.m_length), m_tail(cp_list.m_tail) {
@@ -227,21 +227,22 @@ namespace data_structures {
         } // end push
 
         template<class T>
-        void list<T>::insert(const T& data, int position) {
+        void list<T>::insert_after(int position, const T& data) {
             if (empty() || position < 1 || position > m_length) {
                 throw std::domain_error("Error: list is empty or the position is invalid.");
             }
 
-            auto node_before = get_node_at(position);
+            // auto node_before = get_node_at(position);
             auto new_node = std::make_shared<node<T>>(data);
-            auto node_after = node_before->get_next();
 
-            node_before->set_next(new_node);
-            new_node->set_next(node_after);
+            new_node->set_prev(get_node_at(position));
+            new_node->set_next(get_node_at(position)->get_next());
 
-            node_after->set_prev(new_node);
-            new_node->set_prev(node_before);
-        } // end insert
+            get_node_at(position)->set_next(new_node);
+            get_node_at(position)->get_next()->set_prev(new_node);
+
+            m_length++;
+        } // end insert_after
 
         template<class T>
         void list<T>::delete_node(int position) {
@@ -262,7 +263,7 @@ namespace data_structures {
         template<class T>
         auto list<T>::get_node_at(int position) const {
             auto current = m_head;
-            for (int count = 1; count < position; ++count) {
+            for (int count = 1; count < position; count++) {
                 current = current->get_next();
             }
             return current;
@@ -281,16 +282,16 @@ namespace data_structures {
 
         template<class T>
         void list<T>::fwd_traverse() const {
-            for (auto current_ptr = m_head; current_ptr != nullptr; current_ptr = current_ptr->get_next()) {
-                std::cout << current_ptr->get_data() << "->";
+            for (int i = 1; i <= this->length(); i++) {
+                std::cout << this->get_entry(i) << "  ";
             }
             std::cout << std::endl;
         } // end fwd_traverse
 
         template<class T>
         void list<T>::bkd_traverse() const {
-            for (auto current_ptr = m_tail; current_ptr != nullptr; current_ptr = current_ptr->get_prev()) {
-                std::cout << current_ptr->get_data() << "->";
+            for (int i = this->length(); i >= 1 ; i--) {
+                std::cout << this->get_entry(i) << "  ";
             }
             std::cout << std::endl;
         } // end bkd_traverse
